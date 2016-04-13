@@ -17,6 +17,10 @@ package org.bots4j.utils.json;/*
 import com.google.api.client.json.gson.GsonFactory;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
@@ -30,6 +34,7 @@ public class FlexibleMapTest {
         FlexibleMap map = new FlexibleMap();
         ExampleObject exampleObject = new ExampleObject().setName("harry").setCount(11);
         map.put("exampleObject", exampleObject);
+
         ExampleContainer container = new ExampleContainer().setType("example").setContext(map);
 
         String json = GsonUtils.toJson(container);
@@ -40,6 +45,27 @@ public class FlexibleMapTest {
 
         assertEquals("harry",eo.getName());
         assertEquals(11l,(long)eo.getCount());
+    }
+
+    @Test
+    public void testGetAsList(){
+
+        FlexibleMap map = new FlexibleMap();
+        List<ExampleObject> list = new ArrayList<>();
+        list.add(new ExampleObject().setName("one"));
+        list.add(new ExampleObject().setName("two"));
+        map.put("list", list);
+
+        ExampleContainer container = new ExampleContainer().setType("example").setContext(map);
+
+        String json = GsonUtils.toJson(container);
+
+        ExampleContainer result = GsonUtils.fromJson(json,ExampleContainer.class);
+
+        List<ExampleObject> exampleList = result.getContext().getAsList("list", ExampleObject.class);
+        assertEquals(2,exampleList.size());
+        assertEquals("one",exampleList.get(0).getName());
+        assertEquals("two",exampleList.get(1).getName());
     }
 
 

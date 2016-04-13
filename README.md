@@ -29,7 +29,7 @@ Add this dependency:
     <dependency>
       <groupId>org.bots4j</groupId>
       <artifactId>bots4j-utils</artifactId>
-      <version>0.1</version>
+      <version>0.11</version>
     </dependency>
     
 

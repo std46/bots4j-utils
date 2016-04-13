@@ -16,7 +16,9 @@ package org.bots4j.utils.json;
  * limitations under the License.
  */
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by ajchesney on 13/04/2016.
@@ -26,13 +28,17 @@ public class FlexibleMap extends LinkedHashMap<String,Object> {
     /**
      * Get the value from the map but use Gson to convert it to
      * the required type
-     * @param key
-     * @param requiredType
-     * @param <E>
-     * @return
      */
     public <E> E getAs(String key, Class<E> requiredType){
         return GsonUtils.convertIfRequired(get(key),requiredType);
+    }
+
+    /**
+     * Get the value from the map but then use Gson to convert it to
+     * an ArrayList containing items of the given type
+     */
+    public <E> List<E> getAsList(String key, Class<E> requiredItemType){
+        return GsonUtils.convertArrayToList(get(key),requiredItemType);
     }
 
 }

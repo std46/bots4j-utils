@@ -19,6 +19,9 @@ package org.bots4j.utils.json;
 import com.google.api.client.json.gson.GsonFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by ajchesney on 13/04/2016.
@@ -48,6 +51,21 @@ public class GsonUtils {
     }
 
     /**
+     * Convert the given json array into an ArrayList containing items of the given type
+     */
+    public static <E> List<E> fromJsonArray(String json, Class<E> targetItemType){
+        try {
+            ArrayList<E> result = new ArrayList<>();
+            GsonFactory.getDefaultInstance().createJsonParser(json).parseArray(result,targetItemType);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    /**
      * Use Gson to convert the given object into the required type
      * by serializing to JSON and then deserialising into a new object of the
      * given type
@@ -64,4 +82,13 @@ public class GsonUtils {
         }
     }
 
+    /**
+     * Convert a JSON array into an ArrayList of objects of the required type
+     */
+    public static <E> List<E> convertArrayToList(Object obj, Class<E> targetItemType) {
+        if ( obj == null ){
+            return null;
+        }
+        return fromJsonArray(toJson(obj),targetItemType);
+    }
 }
